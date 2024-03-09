@@ -23,18 +23,25 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -54,54 +61,55 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovieAppMAD24Theme {
-                // A surface container using the 'background' color from the theme
-                val movieList = remember {
-                    mutableStateOf(getMovies())
+                val movieList = remember { mutableStateOf(getMovies()) }
+                val navItems = getNavItems()
+                var selectedItemIndex by remember {
+                    mutableStateOf(0)
                 }
                 Scaffold(
                     topBar = {
                         TopAppBar(title = { Text(text = "mMovies") })
                     },
                     bottomBar = {
-                        BottomAppBar({
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceAround
-                            ) {
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    IconButton(
-                                        onClick = { movieList.value = getMovies() }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Home,
-                                            contentDescription = "Back"
-                                        )
+                        NavigationBar() {
+                            navItems.forEachIndexed { index, item ->
+                                NavigationBarItem(
+                                    selected = selectedItemIndex == index,
+                                    onClick = {
+                                        selectedItemIndex = index
+                                        movieList.value = if (index == 1) likedList else getMovies()
+                                    },
+                                    label = {
+                                        Text(text = item.title)
+                                    },
+                                    icon = {
+                                        BadgedBox(
+                                            badge = {
+                                                if (item.count != null && item.count > 0) {
+                                                    Badge {
+                                                        Text(text = item.count.toString())
+                                                    }
+                                                }
+                                            }
+                                        ) {
+                                            Icon(
+                                                imageVector = if (index == selectedItemIndex) item.selectedIcon
+                                                else item.unselectedIcon,
+                                                contentDescription = item.title
+                                            )
+                                        }
                                     }
-                                    Text(
-                                        text = "Home",
-                                        fontSize = 12.sp
-                                    )
-                                }
-                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    IconButton(onClick = { movieList.value = likedList }) {
-                                        Icon(
-                                            imageVector = Icons.Default.Star,
-                                            contentDescription = "Back"
-                                        )
-                                    }
-                                    Text(
-                                        text = "Favourites",
-                                        fontSize = 12.sp
-                                    )
-                                }
+                                )
                             }
-                        })
-                    }) { paddingValues ->
-                    GenerateMovieList(list = movieList.value, paddingValues = paddingValues)
+                        }
+                    }
+                ) { PaddingValues ->
+                    GenerateMovieList(list = movieList.value, paddingValues = PaddingValues)
                 }
             }
         }
     }
+
 
     @Composable
     fun GenerateMovieList(list: List<Movie>, paddingValues: PaddingValues) {
@@ -196,7 +204,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-
     }
 }
 
