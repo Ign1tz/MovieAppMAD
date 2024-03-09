@@ -97,14 +97,14 @@ class MainActivity : ComponentActivity() {
                             }
                         })
                     }) { paddingValues ->
-                    generateMovieList(list = movieList.value, paddingValues = paddingValues)
+                    GenerateMovieList(list = movieList.value, paddingValues = paddingValues)
                 }
             }
         }
     }
 
     @Composable
-    fun generateMovieList(list: List<Movie>, paddingValues: PaddingValues) {
+    fun GenerateMovieList(list: List<Movie>, paddingValues: PaddingValues) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -114,14 +114,14 @@ class MainActivity : ComponentActivity() {
                 )
         ) {
             items(list) { movie ->
-                generateMovieCard(movie = movie)
+                GenerateMovieCard(movie = movie)
             }
         }
     }
 
 
     @Composable
-    fun generateMovieCard(movie: Movie) {
+    fun GenerateMovieCard(movie: Movie) {
         val arrow = remember { mutableStateOf(false) }
         val liked =
             remember { mutableStateOf(movie in likedList) }
