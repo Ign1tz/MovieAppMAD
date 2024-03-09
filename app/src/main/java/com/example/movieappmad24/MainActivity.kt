@@ -48,7 +48,6 @@ import com.example.movieappmad24.ui.theme.MovieAppMAD24Theme
 class MainActivity : ComponentActivity() {
     var likedList = mutableListOf<Movie>()
 
-
     @OptIn(ExperimentalMaterial3Api::class)
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,21 +97,14 @@ class MainActivity : ComponentActivity() {
                             }
                         })
                     }) { paddingValues ->
-                    movieList(list = movieList.value, paddingValues = paddingValues)
+                    generateMovieList(list = movieList.value, paddingValues = paddingValues)
                 }
             }
         }
     }
 
-
     @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
-    fun page() {
-
-    }
-
-    @Composable
-    fun movieList(list: List<Movie>, paddingValues: PaddingValues) {
+    fun generateMovieList(list: List<Movie>, paddingValues: PaddingValues) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -122,14 +114,14 @@ class MainActivity : ComponentActivity() {
                 )
         ) {
             items(list) { movie ->
-                MovieCard(movie = movie)
+                generateMovieCard(movie = movie)
             }
         }
     }
 
 
     @Composable
-    fun MovieCard(movie: Movie) {
+    fun generateMovieCard(movie: Movie) {
         val arrow = remember { mutableStateOf(false) }
         val liked =
             remember { mutableStateOf(movie in likedList) }
@@ -137,6 +129,7 @@ class MainActivity : ComponentActivity() {
         var imageIndex = 0
         liked.value = movie in likedList
         imageUrl.value = movie.images[imageIndex]
+        arrow.value = false
         Card(
             modifier = Modifier.padding(all = 5.dp),
         ) {
@@ -145,11 +138,10 @@ class MainActivity : ComponentActivity() {
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(imageUrl.value)
                         .crossfade(true)
-                        .build()
-                    ,
+                        .build(),
                     contentDescription = null,
                     modifier = Modifier.clickable(onClick = {
-                        imageIndex = (imageIndex+1) % movie.images.size
+                        imageIndex = (imageIndex + 1) % movie.images.size
                         imageUrl.value = movie.images[imageIndex]
                     }),
                 )
