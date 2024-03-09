@@ -12,9 +12,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class BottomNavItem(
     val title: String,
     val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector,
-    val movies: List<Movie> = mutableListOf<Movie>(),
-    val count: Int? = null
+    val unselectedIcon: ImageVector
 )
 
 fun getNavItems(): List<BottomNavItem> {
@@ -23,14 +21,11 @@ fun getNavItems(): List<BottomNavItem> {
             title = "Home",
             selectedIcon = Icons.Filled.Home,
             unselectedIcon = Icons.Outlined.Home,
-            movies = getMovies()
         ),
         BottomNavItem(
             title = "Favourites",
             selectedIcon = Icons.Filled.Star,
-            unselectedIcon = Icons.Outlined.Star,
-            count = 0,
-            movies = mutableListOf<Movie>()
+            unselectedIcon = Icons.Outlined.Star
         ),
     )
 }
