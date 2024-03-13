@@ -13,6 +13,8 @@ data class Movie(
     val rating: String
 )
 
+var likedList = mutableListOf<Movie>()
+
 
 fun getMovies(): List<Movie> {
     return listOf(
@@ -151,4 +153,13 @@ fun getMovies(): List<Movie> {
             rating = "9.5"),
 
         )
+}
+
+fun getMovieById(id: String?): Movie {
+    for (movie in getMovies()){
+        if (movie.id == id){
+            return movie
+        }
+    }
+    return getMovies()[0]
 }
