@@ -8,24 +8,20 @@ import androidx.navigation.NavController
 import com.example.movieappmad24.components.GenerateMovieList
 import com.example.movieappmad24.components.GenBottomBar
 import com.example.movieappmad24.components.GenTopAppBar
-import com.example.movieappmad24.getMovies
+import com.example.movieappmad24.likedList
 
 @Composable
-fun Home(navController: NavController) {
-    val movieList = remember { mutableStateOf(getMovies()) }
+fun Favourites(navController: NavController) {
+    val movieList = remember { mutableStateOf(likedList) }
 
     Scaffold(
         topBar = {
             GenTopAppBar(title = "mMovies", details = false)
         },
         bottomBar = {
-            GenBottomBar(navController = navController, currentIndex = 0)
+            GenBottomBar(navController = navController, currentIndex = 1)
         }
     ) { paddingValues ->
         GenerateMovieList(list = movieList.value, paddingValues = paddingValues, navController)
     }
-
 }
-
-
-

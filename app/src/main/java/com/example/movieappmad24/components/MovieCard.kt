@@ -55,7 +55,7 @@ fun GenerateMovieList(
             )
     ) {
         items(list) { movie ->
-            GenerateMovieCard(movie = movie, { movie -> navController.navigate(Screens.Details.route + "/${movie.id}") })
+            GenerateMovieCard(movie = movie, { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") })
         }
     }
 }

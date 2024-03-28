@@ -8,7 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappmad24.getMovieById
 import com.example.movieappmad24.screens.Details
-import com.example.movieappmad24.screens.Favourits
+import com.example.movieappmad24.screens.Favourites
 import com.example.movieappmad24.screens.Home
 
 @Composable
@@ -27,7 +27,7 @@ fun Navigation() {
         composable(
             route = Screens.Favourites.route
         ) {
-            Favourits(navController = navController)
+            Favourites(navController = navController)
         }
     }
 }

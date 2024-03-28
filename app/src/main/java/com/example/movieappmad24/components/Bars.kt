@@ -11,13 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.example.movieappmad24.getNavItems
+import com.example.movieappmad24.navigation.getNavItems
 import com.example.movieappmad24.navigation.Screens
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun genTopAppBar(title: String, details: Boolean, navController: NavController? = null) {
+fun GenTopAppBar(title: String, details: Boolean, navController: NavController? = null) {
     return TopAppBar(
         title = { Text(text = title) },
         navigationIcon =
@@ -35,13 +35,13 @@ fun genTopAppBar(title: String, details: Boolean, navController: NavController? 
 }
 
 @Composable
-fun genBottomBar(navController: NavController, currentIndex: Int) {
+fun GenBottomBar(navController: NavController, currentIndex: Int) {
     val navItems = getNavItems()
     return NavigationBar {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = currentIndex == index,
-                onClick = {if (index != currentIndex) navController.navigate("${item.title.lowercase()}") {popUpTo(Screens.Home.route)}
+                onClick = {if (index != currentIndex) navController.navigate(item.title.lowercase()) {popUpTo(Screens.Home.route)}
                 },
                 label = {
                     Text(text = item.title)
