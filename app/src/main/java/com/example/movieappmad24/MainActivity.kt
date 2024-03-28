@@ -56,7 +56,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MovieAppMAD24Theme {
-                Navigation(modifier = Modifier)
+                Navigation()
             }
         }
     }
