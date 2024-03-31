@@ -9,10 +9,13 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.movieappmad24.navigation.getNavItems
 import com.example.movieappmad24.navigation.Screens
+import com.example.movieappmad24.ui.theme.Purple40
+import com.example.movieappmad24.ui.theme.Purple80
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -30,7 +33,8 @@ fun GenTopAppBar(title: String, details: Boolean, navController: NavController? 
                     )
                 }
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = Purple40),
     )
 }
 
