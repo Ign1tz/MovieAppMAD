@@ -1,5 +1,8 @@
 package com.example.movieappmad24
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+
 data class Movie(
     val id: String,
     val title: String,
@@ -154,6 +157,7 @@ fun getMovies(): List<Movie> {
 
         )
 }
+
 
 fun getMovieById(id: String?): Movie {
     for (movie in getMovies()){
