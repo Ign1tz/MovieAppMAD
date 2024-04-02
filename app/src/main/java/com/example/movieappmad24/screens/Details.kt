@@ -28,29 +28,29 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
-import com.example.movieappmad24.Movie
 import com.example.movieappmad24.R
-import com.example.movieappmad24.components.GenerateMovieCard
 import com.example.movieappmad24.components.GenTopAppBar
-import com.google.common.reflect.Reflection.getPackageName
+import com.example.movieappmad24.components.GenerateMovieCard
+import com.example.movieappmad24.components.MovieViewModel
+import com.example.movieappmad24.Movie
 
 
 @Composable
-fun Details(movie: Movie, navController: NavController) {
+fun Details(movie: Movie, navController: NavController, movieViewModel: MovieViewModel) {
     Scaffold(
         topBar = {
             GenTopAppBar(title = movie.title, details = true, navController = navController)
         }
     ) { paddingValues ->
-        GenerateMovieDetails(movie = movie, paddingValues = paddingValues)
+        GenerateMovieDetails(movie = movie, paddingValues = paddingValues, movieViewModel = movieViewModel)
     }
 }
 
 
 @Composable
-fun GenerateMovieDetails(movie: Movie, paddingValues: PaddingValues) {
+fun GenerateMovieDetails(movie: Movie, paddingValues: PaddingValues, movieViewModel: MovieViewModel) {
     Column(modifier = Modifier.padding(paddingValues)) {
-        GenerateMovieCard(movie = movie)
+        GenerateMovieCard(movie = movie, movieViewModel = movieViewModel)
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
             ExoPlayerView(movie.trailer)
 

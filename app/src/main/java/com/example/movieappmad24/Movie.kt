@@ -1,7 +1,9 @@
 package com.example.movieappmad24
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.example.movieappmad24.components.MovieViewModel
 
 data class Movie(
     val id: String,
@@ -13,11 +15,11 @@ data class Movie(
     val plot: String,
     val images: List<String>,
     val trailer: String,
-    val rating: String
-)
-
-var likedList = mutableListOf<Movie>()
-
+    val rating: String,
+    val initialIsFavorite: Boolean = false
+) {
+    var isFavorite by mutableStateOf(initialIsFavorite)
+}
 
 fun getMovies(): List<Movie> {
     return listOf(
@@ -159,11 +161,11 @@ fun getMovies(): List<Movie> {
 }
 
 
-fun getMovieById(id: String?): Movie {
-    for (movie in getMovies()){
+fun getMovieById(id: String?, movieViewModel: MovieViewModel): Movie {
+    for (movie in movieViewModel.movieList){
         if (movie.id == id){
             return movie
         }
     }
-    return getMovies()[0]
+    return movieViewModel.movieList[0]
 }

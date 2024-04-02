@@ -32,11 +32,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.movieappmad24.Movie
-import com.example.movieappmad24.likedList
 import com.example.movieappmad24.navigation.Screens
 
 
@@ -44,7 +44,9 @@ import com.example.movieappmad24.navigation.Screens
 fun GenerateMovieList(
     list: List<Movie>,
     paddingValues: PaddingValues,
-    navController: NavController
+    navController: NavController,
+    movieViewModel: MovieViewModel,
+    favourites: Boolean = false
 ) {
     LazyColumn(
         modifier = Modifier
@@ -55,28 +57,46 @@ fun GenerateMovieList(
             )
     ) {
         items(list) { movie ->
-            GenerateMovieCard(movie = movie, { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") })
+            if (favourites) {
+                if (movie.isFavorite) {
+                    GenerateMovieCard(
+                        movie = movie,
+                        { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
+                        movieViewModel
+                    )
+                }
+            } else {
+                GenerateMovieCard(
+                    movie = movie,
+                    { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
+                    movieViewModel
+                )
+            }
+
+
         }
     }
 }
 
 @Composable
-fun GenerateMovieCard(movie: Movie, onItemClick: (Movie) -> Unit = {}) {
+fun GenerateMovieCard(
+    movie: Movie,
+    onItemClick: (Movie) -> Unit = {},
+    movieViewModel: MovieViewModel
+) {
     val showDescription = remember { mutableStateOf(false) }
-    val liked = remember { mutableStateOf(movie in likedList) }
     val imageUrl = remember { mutableStateOf(movie.images[0]) }
-    liked.value = movie in likedList
-    showDescription.value = false
     Card(
         modifier = Modifier.padding(all = 5.dp),
     ) {
-        movieImage(imageUrl.value, onItemClick, movie, liked)
+        movieImage(imageUrl.value, onItemClick, movie, movieViewModel)
         movieDescription(showDescription, movie)
     }
 }
 
 val movieImage = @Composable
-{ imageUrl: String, onItemClick: (Movie) -> Unit, movie: Movie, liked: MutableState<Boolean> ->
+{ imageUrl: String, onItemClick: (Movie) -> Unit, movie: Movie, test: MovieViewModel ->
+
     Box {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
@@ -89,12 +109,12 @@ val movieImage = @Composable
             }),
         )
         IconButton(onClick = {
-            liking(liked, movie)
+            test.liking(movie)
 
         }, modifier = Modifier.align(Alignment.TopEnd)) {
             Icon(
-                imageVector = if (liked.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                tint = if (liked.value) Color.Red else Color.LightGray,
+                imageVector = if (movie.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                tint = if (movie.isFavorite) Color.Red else Color.LightGray,
                 contentDescription = "Back"
             )
         }
@@ -126,20 +146,6 @@ val movieDescription = @Composable
     }
 }
 
-
-fun liking(liked: MutableState<Boolean>, movie: Movie) {
-    if (liked.value) {
-        liked.value = false
-        if (movie in likedList) {
-            likedList.remove(movie)
-        }
-    } else {
-        liked.value = true
-        if (movie !in likedList) {
-            likedList.add(movie)
-        }
-    }
-}
 
 @Composable
 fun Description(movie: Movie) {
