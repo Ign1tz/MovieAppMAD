@@ -68,9 +68,9 @@ fun GenerateMovieDetails(movie: Movie, paddingValues: PaddingValues, movieViewMo
 
 
 @OptIn(UnstableApi::class) @Composable
-fun ExoPlayerView(uri: String) {
+fun ExoPlayerView(trailer: String) {
     val context = LocalContext.current
-    val uri = "android.resource://" + context.getPackageName() + "/${context.resources.getIdentifier(uri, "raw", context.packageName)}" // overrides because kotlin is anoying
+    val uri = "android.resource://" + context.getPackageName() + "/${context.resources.getIdentifier(trailer, "raw", context.packageName)}" // overrides because kotlin is anoying
     val exoPlayer = ExoPlayer.Builder(context).build()
 
     val mediaSource = remember(uri) {

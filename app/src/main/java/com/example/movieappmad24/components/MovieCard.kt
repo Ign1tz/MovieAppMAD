@@ -89,13 +89,13 @@ fun GenerateMovieCard(
     Card(
         modifier = Modifier.padding(all = 5.dp),
     ) {
-        movieImage(imageUrl.value, onItemClick, movie, movieViewModel)
+        movieImage(imageUrl.value, onItemClick, movie, { movie -> movieViewModel.liking(movie) })
         movieDescription(showDescription, movie)
     }
 }
 
 val movieImage = @Composable
-{ imageUrl: String, onItemClick: (Movie) -> Unit, movie: Movie, test: MovieViewModel ->
+{ imageUrl: String, onItemClick: (Movie) -> Unit, movie: Movie, liking: (Movie) -> Unit ->
 
     Box {
         AsyncImage(
@@ -109,8 +109,7 @@ val movieImage = @Composable
             }),
         )
         IconButton(onClick = {
-            test.liking(movie)
-
+            liking(movie)
         }, modifier = Modifier.align(Alignment.TopEnd)) {
             Icon(
                 imageVector = if (movie.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
