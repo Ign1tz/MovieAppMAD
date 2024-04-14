@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import com.example.movieappmad24.navigation.getNavItems
 import com.example.movieappmad24.navigation.Screens
 import com.example.movieappmad24.ui.theme.Purple40
-import com.example.movieappmad24.ui.theme.Purple80
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +44,12 @@ fun GenBottomBar(navController: NavController, currentIndex: Int) {
         navItems.forEachIndexed { index, item ->
             NavigationBarItem(
                 selected = currentIndex == index,
-                onClick = {if (index != currentIndex) navController.navigate(item.title.lowercase()) {popUpTo(Screens.Home.route)}
+                onClick = {
+                    if (index != currentIndex) navController.navigate(item.title.lowercase()) {
+                        popUpTo(
+                            Screens.Home.route
+                        )
+                    }
                 },
                 label = {
                     Text(text = item.title)

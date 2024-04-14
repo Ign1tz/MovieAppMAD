@@ -1,9 +1,8 @@
-package com.example.movieappmad24
+package com.example.movieappmad24.components
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.example.movieappmad24.components.MovieViewModel
 
 data class Movie(
     val id: String,

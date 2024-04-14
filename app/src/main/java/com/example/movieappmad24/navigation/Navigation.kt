@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappmad24.components.MovieViewModel
-import com.example.movieappmad24.getMovieById
+import com.example.movieappmad24.components.getMovieById
 import com.example.movieappmad24.screens.Details
 import com.example.movieappmad24.screens.Favourites
 import com.example.movieappmad24.screens.Home

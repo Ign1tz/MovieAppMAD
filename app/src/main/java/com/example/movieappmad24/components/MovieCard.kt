@@ -32,11 +32,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.movieappmad24.Movie
 import com.example.movieappmad24.navigation.Screens
 
 
@@ -62,14 +60,16 @@ fun GenerateMovieList(
                     GenerateMovieCard(
                         movie = movie,
                         { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
-                        movieViewModel
+                        movieViewModel,
+                        { movie -> movieViewModel.liking(movie) }
                     )
                 }
             } else {
                 GenerateMovieCard(
                     movie = movie,
                     { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
-                    movieViewModel
+                    movieViewModel,
+                    { movie -> movieViewModel.liking(movie) }
                 )
             }
 
@@ -82,14 +82,15 @@ fun GenerateMovieList(
 fun GenerateMovieCard(
     movie: Movie,
     onItemClick: (Movie) -> Unit = {},
-    movieViewModel: MovieViewModel
+    movieViewModel: MovieViewModel,
+    liking: (Movie) -> Unit = {}
 ) {
     val showDescription = remember { mutableStateOf(false) }
     val imageUrl = remember { mutableStateOf(movie.images[0]) }
     Card(
         modifier = Modifier.padding(all = 5.dp),
     ) {
-        movieImage(imageUrl.value, onItemClick, movie, { movie -> movieViewModel.liking(movie) })
+        movieImage(imageUrl.value, onItemClick, movie, liking)
         movieDescription(showDescription, movie)
     }
 }
