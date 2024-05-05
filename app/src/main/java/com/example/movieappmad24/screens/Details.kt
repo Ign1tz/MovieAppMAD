@@ -1,20 +1,18 @@
 package com.example.movieappmad24.screens
 
+import android.util.Log
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.OptIn
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import coil.compose.AsyncImage
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
@@ -31,37 +30,53 @@ import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
 import com.example.movieappmad24.components.GenTopAppBar
 import com.example.movieappmad24.components.GenerateMovieCard
-import com.example.movieappmad24.components.MovieViewModel
-import com.example.movieappmad24.components.Movie
+import com.example.movieappmad24.dependency_injection.Injector
+import com.example.movieappmad24.models.MovieWithImages
+import com.example.movieappmad24.viewmodel.DetailsMovieViewModel
 
 
 @Composable
-fun Details(movie: Movie, navController: NavController, movieViewModel: MovieViewModel) {
-    Scaffold(
-        topBar = {
-            GenTopAppBar(title = movie.title, details = true, navController = navController)
+fun Details(navController: NavController, id: String?) {
+    val viewModel: DetailsMovieViewModel = viewModel(factory = Injector.provideMovieViewModelFactory(context = LocalContext.current))
+    Log.d("test id", id?:"null")
+    val movie = viewModel.getMovieById(id = id)?.collectAsState()?.value
+    Log.d("test", "hmm")
+    Log.d("test", movie.toString())
+    if (movie != null) {
+        Scaffold(
+            topBar = {
+                GenTopAppBar(
+                    title = movie.movie.title,
+                    details = true,
+                    navController = navController
+                )
+            }
+        ) { paddingValues ->
+            GenerateMovieDetails(
+                movie = movie,
+                paddingValues = paddingValues,
+                viewModel = viewModel
+            )
         }
-    ) { paddingValues ->
-        GenerateMovieDetails(movie = movie, paddingValues = paddingValues, movieViewModel = movieViewModel)
     }
 }
 
 
 @Composable
-fun GenerateMovieDetails(movie: Movie, paddingValues: PaddingValues, movieViewModel: MovieViewModel) {
+fun GenerateMovieDetails(movie: MovieWithImages, paddingValues: PaddingValues, viewModel: DetailsMovieViewModel) {
+    Log.d("test", "hmm1")
     Column(modifier = Modifier.padding(paddingValues)) {
-        GenerateMovieCard(movie = movie, movieViewModel = movieViewModel, liking = { movie -> movieViewModel.liking(movie) })
+        GenerateMovieCard(movie = movie, viewModel = viewModel, liking = { viewModel.updateFavourite(movie) })
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
-            ExoPlayerView(movie.trailer)
+            ExoPlayerView(movie.movie.trailer)
 
             LazyRow {
-                items(movie.images) { imageURL ->
+                items(movie.movieImages.drop(1)) { image ->
                     AsyncImage(
-                        model = imageURL, contentDescription = "null"
+                        model = image.url, contentDescription = "null"
                     )
                 }
             }
-
         }
     }
 }

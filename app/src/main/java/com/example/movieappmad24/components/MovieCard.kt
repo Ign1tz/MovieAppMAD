@@ -1,5 +1,6 @@
 package com.example.movieappmad24.components
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,16 +36,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.movieappmad24.models.MovieWithImages
 import com.example.movieappmad24.navigation.Screens
+import com.example.movieappmad24.view_models.MovieViewModel
 
 
 @Composable
 fun GenerateMovieList(
-    list: List<Movie>,
+    list: List<MovieWithImages>,
     paddingValues: PaddingValues,
     navController: NavController,
-    movieViewModel: MovieViewModel,
-    favourites: Boolean = false
+    viewModel: MovieViewModel
 ) {
     LazyColumn(
         modifier = Modifier
@@ -55,48 +57,34 @@ fun GenerateMovieList(
             )
     ) {
         items(list) { movie ->
-            if (favourites) {
-                if (movie.isFavorite) {
-                    GenerateMovieCard(
-                        movie = movie,
-                        { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
-                        movieViewModel,
-                        { movie -> movieViewModel.liking(movie) }
-                    )
-                }
-            } else {
-                GenerateMovieCard(
-                    movie = movie,
-                    { movi -> navController.navigate(Screens.Details.route + "/${movi.id}") },
-                    movieViewModel,
-                    { movie -> movieViewModel.liking(movie) }
-                )
-            }
-
-
+            GenerateMovieCard(
+                movie = movie,
+                { id: String -> navController.navigate(Screens.Details.route + "/${id}") },
+                viewModel,
+                { movie: MovieWithImages -> viewModel.updateFavourite(movie) }
+            )
         }
     }
 }
 
 @Composable
 fun GenerateMovieCard(
-    movie: Movie,
-    onItemClick: (Movie) -> Unit = {},
-    movieViewModel: MovieViewModel,
-    liking: (Movie) -> Unit = {}
+    movie: MovieWithImages,
+    onItemClick: (String) -> Unit = {},
+    viewModel: MovieViewModel,
+    liking: (MovieWithImages) -> Unit = {}
 ) {
     val showDescription = remember { mutableStateOf(false) }
-    val imageUrl = remember { mutableStateOf(movie.images[0]) }
     Card(
         modifier = Modifier.padding(all = 5.dp),
     ) {
-        movieImage(imageUrl.value, onItemClick, movie, liking)
+        movieImage(movie.movieImages[0].url, onItemClick, movie, liking)
         movieDescription(showDescription, movie)
     }
 }
 
 val movieImage = @Composable
-{ imageUrl: String, onItemClick: (Movie) -> Unit, movie: Movie, liking: (Movie) -> Unit ->
+{ imageUrl: String, onItemClick: (String) -> Unit, movie: MovieWithImages, liking: (MovieWithImages) -> Unit ->
 
     Box {
         AsyncImage(
@@ -106,15 +94,15 @@ val movieImage = @Composable
                 .build(),
             contentDescription = null,
             modifier = Modifier.clickable(onClick = {
-                onItemClick(movie)
+                onItemClick(movie.movie.id)
             }),
         )
         IconButton(onClick = {
             liking(movie)
         }, modifier = Modifier.align(Alignment.TopEnd)) {
             Icon(
-                imageVector = if (movie.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                tint = if (movie.isFavorite) Color.Red else Color.LightGray,
+                imageVector = if (movie.movie.isFavourite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                tint = if (movie.movie.isFavourite) Color.Red else Color.LightGray,
                 contentDescription = "Back"
             )
         }
@@ -122,7 +110,8 @@ val movieImage = @Composable
 }
 
 val movieDescription = @Composable
-{ showDescription: MutableState<Boolean>, movie: Movie ->
+{ showDescription: MutableState<Boolean>, movie: MovieWithImages ->
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
@@ -131,7 +120,7 @@ val movieDescription = @Composable
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Text(
-            text = movie.title,
+            text = movie.movie.title,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 10.dp),
             fontSize = 20.sp
         )
@@ -148,14 +137,14 @@ val movieDescription = @Composable
 
 
 @Composable
-fun Description(movie: Movie) {
+fun Description(movie: MovieWithImages) {
     Column(modifier = Modifier.padding(all = 12.dp)) {
-        Text(text = "Director: " + movie.director)
-        Text(text = "Released: " + movie.year)
-        Text(text = "Genre: " + movie.genre)
-        Text(text = "Actors: " + movie.actors)
-        Text(text = "Rating: " + movie.rating)
+        Text(text = "Director: " + movie.movie.director)
+        Text(text = "Released: " + movie.movie.year)
+        Text(text = "Genre: " + movie.movie.genre)
+        Text(text = "Actors: " + movie.movie.actors)
+        Text(text = "Rating: " + movie.movie.rating)
         Divider(color = Color.Gray, thickness = 1.dp)
-        Text(text = "Plot: " + movie.plot)
+        Text(text = "Plot: " + movie.movie.plot)
     }
 }
