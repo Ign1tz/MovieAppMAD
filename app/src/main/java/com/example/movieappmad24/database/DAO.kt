@@ -1,7 +1,6 @@
 package com.example.movieappmad24.database
 
 import androidx.room.*
-import com.example.movieappmad24.models.Movie
 import com.example.movieappmad24.models.MovieWithImages
 import kotlinx.coroutines.flow.Flow
 

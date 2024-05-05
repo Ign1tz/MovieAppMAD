@@ -5,8 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.movieappmad24.database.workers.DatabaseWorkManager
-import com.example.movieappmad24.database.Movie
+import com.example.movieappmad24.database.workers.DBWorkManager
 
 @Database(
     entities = [Movie::class, MovieImages::class],
@@ -34,7 +33,7 @@ abstract class MovieDatabase : RoomDatabase() {
             return object : Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    val WorkManager = DatabaseWorkManager(context)
+                    val WorkManager = DBWorkManager(context)
                     WorkManager.seedRequest()
                 }
             }
