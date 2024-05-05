@@ -38,10 +38,8 @@ import com.example.movieappmad24.viewmodel.DetailsMovieViewModel
 @Composable
 fun Details(navController: NavController, id: String?) {
     val viewModel: DetailsMovieViewModel = viewModel(factory = Injector.provideMovieViewModelFactory(context = LocalContext.current))
-    Log.d("test id", id?:"null")
     val movie = viewModel.getMovieById(id = id)?.collectAsState()?.value
-    Log.d("test", "hmm")
-    Log.d("test", movie.toString())
+    Log.d("test", "test")
     if (movie != null) {
         Scaffold(
             topBar = {
@@ -64,9 +62,8 @@ fun Details(navController: NavController, id: String?) {
 
 @Composable
 fun GenerateMovieDetails(movie: MovieWithImages, paddingValues: PaddingValues, viewModel: DetailsMovieViewModel) {
-    Log.d("test", "hmm1")
     Column(modifier = Modifier.padding(paddingValues)) {
-        GenerateMovieCard(movie = movie, viewModel = viewModel, liking = { viewModel.updateFavourite(movie) })
+        GenerateMovieCard(movie = movie, liking = { viewModel.updateFavourite(movie) })
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
             ExoPlayerView(movie.movie.trailer)
 

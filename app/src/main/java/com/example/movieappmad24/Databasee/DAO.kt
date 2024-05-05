@@ -21,8 +21,8 @@ interface MovieDAO {
     @Delete
     fun delete(movie: Movie)
 
-    @Update()
-    fun update(movie: Movie)
+    @Update
+    suspend fun update(movie: Movie)
 
     @Query("DELETE FROM Movie")
     suspend fun deleteAll()

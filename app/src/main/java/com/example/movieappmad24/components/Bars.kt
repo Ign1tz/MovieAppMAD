@@ -45,11 +45,7 @@ fun GenBottomBar(navController: NavController, currentIndex: Int) {
             NavigationBarItem(
                 selected = currentIndex == index,
                 onClick = {
-                    if (index != currentIndex) navController.navigate(item.title.lowercase()) {
-                        popUpTo(
-                            Screens.Home.route
-                        )
-                    }
+                    if (index != currentIndex) navController.navigate(item.title.lowercase())
                 },
                 label = {
                     Text(text = item.title)

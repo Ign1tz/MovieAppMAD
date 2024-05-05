@@ -20,7 +20,6 @@ fun Navigation() {
             route = Screens.Details.route+"/{movieid}",
             arguments = listOf(navArgument(name = "movieid") { type = NavType.StringType })
         ) { backStackEntry ->
-            Log.d("testing at begining", backStackEntry.arguments?.getString(DETAILS_KEY)?:"null")
             Details(navController = navController, id = backStackEntry.arguments?.getString(DETAILS_KEY))
         }
         composable(

@@ -46,7 +46,7 @@ fun GenerateMovieList(
     list: List<MovieWithImages>,
     paddingValues: PaddingValues,
     navController: NavController,
-    viewModel: MovieViewModel
+    liking: (MovieWithImages) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier
@@ -60,8 +60,7 @@ fun GenerateMovieList(
             GenerateMovieCard(
                 movie = movie,
                 { id: String -> navController.navigate(Screens.Details.route + "/${id}") },
-                viewModel,
-                { movie: MovieWithImages -> viewModel.updateFavourite(movie) }
+                liking = liking
             )
         }
     }
@@ -71,7 +70,6 @@ fun GenerateMovieList(
 fun GenerateMovieCard(
     movie: MovieWithImages,
     onItemClick: (String) -> Unit = {},
-    viewModel: MovieViewModel,
     liking: (MovieWithImages) -> Unit = {}
 ) {
     val showDescription = remember { mutableStateOf(false) }
@@ -98,6 +96,7 @@ val movieImage = @Composable
             }),
         )
         IconButton(onClick = {
+            Log.d("test", "liking")
             liking(movie)
         }, modifier = Modifier.align(Alignment.TopEnd)) {
             Icon(

@@ -11,6 +11,7 @@ import com.example.movieappmad24.components.GenerateMovieList
 import com.example.movieappmad24.components.GenBottomBar
 import com.example.movieappmad24.components.GenTopAppBar
 import com.example.movieappmad24.dependency_injection.Injector
+import com.example.movieappmad24.models.MovieWithImages
 import com.example.movieappmad24.viewmodel.FavouriteMovieViewModel
 import com.example.movieappmad24.viewmodel.HomeMovieViewModel
 
@@ -31,7 +32,7 @@ fun Favourites(
             list = viewModel.favourites.collectAsState().value,
             paddingValues = paddingValues,
             navController,
-            viewModel = viewModel
+            { movie: MovieWithImages -> viewModel.updateFavourite(movie) }
         )
     }
 }

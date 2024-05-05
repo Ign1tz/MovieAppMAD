@@ -12,20 +12,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class DetailsMovieViewModel(val movieRepo: MovieRepo): ViewModel(), MovieViewModel {
-    private val movie: MutableStateFlow<MovieWithImages?>? = null
+    private val movie = MutableStateFlow<MovieWithImages?>(null)
 
     fun getMovieById(id: String?): StateFlow<MovieWithImages?>? {
-        var newMovie: MutableStateFlow<MovieWithImages?>? = null
+        var newMovie = MutableStateFlow<MovieWithImages?>(null)
         viewModelScope.launch {
-            Log.d("testing", id?:"null")
             movieRepo.getById(id).collect { movie ->
-                Log.d("testing return", movie.toString())
-                newMovie?.value = movie
-                this@DetailsMovieViewModel.movie?.value = movie
+                newMovie.value = movie
+                this@DetailsMovieViewModel.movie.value = movie
             }
         }
-        Log.d("testing new movie", newMovie.toString())
-        return movie?.asStateFlow()
+        return movie.asStateFlow()
     }
 
     override fun updateFavourite(instance: MovieWithImages) {

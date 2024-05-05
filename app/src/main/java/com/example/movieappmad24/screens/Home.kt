@@ -7,12 +7,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.movieappmad24.Databasee.MovieDatabase
-import com.example.movieappmad24.Databasee.MovieRepo
 import com.example.movieappmad24.components.GenerateMovieList
 import com.example.movieappmad24.components.GenBottomBar
 import com.example.movieappmad24.components.GenTopAppBar
 import com.example.movieappmad24.dependency_injection.Injector
+import com.example.movieappmad24.models.MovieWithImages
 import com.example.movieappmad24.viewmodel.HomeMovieViewModel
 
 @Composable
@@ -20,7 +19,7 @@ fun Home(
     navController: NavController
 ) {
     val viewModel: HomeMovieViewModel = viewModel(factory = Injector.provideMovieViewModelFactory(context = LocalContext.current))
-    val list = viewModel.allMovies.collectAsState().value
+    Log.d("test", "test2")
     Scaffold(
         topBar = {
             GenTopAppBar(title = "mMovies", details = false)
@@ -29,7 +28,9 @@ fun Home(
             GenBottomBar(navController = navController, currentIndex = 0)
         }
     ) { paddingValues ->
-        GenerateMovieList(list = list, paddingValues = paddingValues, navController, viewModel)
+        GenerateMovieList(list = viewModel.allMovies.collectAsState().value, paddingValues = paddingValues, navController,
+            { movie: MovieWithImages -> viewModel.updateFavourite(movie) }
+        )
     }
 
 }
