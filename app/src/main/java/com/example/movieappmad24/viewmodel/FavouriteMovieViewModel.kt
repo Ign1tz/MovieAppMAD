@@ -1,9 +1,8 @@
 package com.example.movieappmad24.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.movieappmad24.Databasee.MovieRepo
+import com.example.movieappmad24.database.MovieRepo
 import com.example.movieappmad24.models.MovieWithImages
 import com.example.movieappmad24.view_models.MovieViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +26,6 @@ class FavouriteMovieViewModel(val movieRepo: MovieRepo) : ViewModel(), MovieView
     override fun updateFavourite(instance: MovieWithImages) {
         instance.movie.isFavourite = !instance.movie.isFavourite
         viewModelScope.launch {
-            Log.d("test", "tesing")
             movieRepo.updateMovie(movie = instance.movie)
         }
     }

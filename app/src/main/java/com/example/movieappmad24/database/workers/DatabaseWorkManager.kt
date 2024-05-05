@@ -1,7 +1,6 @@
-package com.example.movieappmad24.Databasee.workers
+package com.example.movieappmad24.database.workers
 
 import android.content.Context
-import android.util.Log
 import androidx.work.*
 
 class DatabaseWorkManager(context: Context) {

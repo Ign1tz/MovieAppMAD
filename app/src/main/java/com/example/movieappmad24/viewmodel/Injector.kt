@@ -1,8 +1,8 @@
 package com.example.movieappmad24.dependency_injection
 
 import android.content.Context
-import com.example.movieappmad24.Databasee.MovieDatabase
-import com.example.movieappmad24.Databasee.MovieRepo
+import com.example.movieappmad24.database.MovieDatabase
+import com.example.movieappmad24.database.MovieRepo
 import com.example.movieappmad24.view_models.MovieViewModelFactory
 
 object Injector {

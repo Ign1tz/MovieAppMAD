@@ -13,7 +13,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.movieappmad24.navigation.getNavItems
-import com.example.movieappmad24.navigation.Screens
 import com.example.movieappmad24.ui.theme.Purple40
 
 

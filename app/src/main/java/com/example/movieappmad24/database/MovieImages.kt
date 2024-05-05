@@ -1,4 +1,4 @@
-package com.example.movieappmad24.Databasee
+package com.example.movieappmad24.database
 
 import androidx.room.*
 

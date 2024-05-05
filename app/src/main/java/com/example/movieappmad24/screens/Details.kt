@@ -1,6 +1,6 @@
 package com.example.movieappmad24.screens
 
-import android.util.Log
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.annotation.OptIn
@@ -78,11 +78,11 @@ fun GenerateMovieDetails(movie: MovieWithImages, paddingValues: PaddingValues, v
 }
 
 
+@SuppressLint("DiscouragedApi")
 @OptIn(UnstableApi::class) @Composable
 fun ExoPlayerView(trailer: String) {
-    Log.d("test", "trailer")
     val context = LocalContext.current
-    val uri = "android.resource://" + context.getPackageName() + "/${context.resources.getIdentifier(trailer, "raw", context.packageName)}" // overrides because kotlin is anoying
+    val uri = "android.resource://" + context.packageName + "/${context.resources.getIdentifier(trailer, "raw", context.packageName)}" // overrides because kotlin is anoying
     val exoPlayer = ExoPlayer.Builder(context).build()
 
 

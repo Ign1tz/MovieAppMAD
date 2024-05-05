@@ -2,7 +2,7 @@ package com.example.movieappmad24.view_models
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.movieappmad24.Databasee.MovieRepo
+import com.example.movieappmad24.database.MovieRepo
 import com.example.movieappmad24.viewmodel.DetailsMovieViewModel
 import com.example.movieappmad24.viewmodel.FavouriteMovieViewModel
 import com.example.movieappmad24.viewmodel.HomeMovieViewModel

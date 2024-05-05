@@ -1,6 +1,5 @@
 package com.example.movieappmad24.screens
 
-import android.util.Log
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,7 +18,6 @@ fun Home(
     navController: NavController
 ) {
     val viewModel: HomeMovieViewModel = viewModel(factory = Injector.provideMovieViewModelFactory(context = LocalContext.current))
-    Log.d("test", "test2")
     Scaffold(
         topBar = {
             GenTopAppBar(title = "mMovies", details = false)
