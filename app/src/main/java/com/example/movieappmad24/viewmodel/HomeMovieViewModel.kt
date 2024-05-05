@@ -22,13 +22,13 @@ class HomeMovieViewModel(val movieRepo: MovieRepo) : ViewModel(), MovieViewModel
     init {
 
         viewModelScope.launch {
-            movieRepo.getAllMovies().distinctUntilChanged().collect { movies ->
+            /*movieRepo.getAllMovies().distinctUntilChanged().collect { movies ->
                 if (movies.isEmpty()) {
                     movieRepo.deleteAllMovie()
                     movieRepo.deleteAllImages()
                     getMovies().forEach { movie: Movie ->
                         movie.images.forEach {
-                            movieRepo.insertAllImages(MovieImages(movieId = movie.id, url = it))
+                            movieRepo.insertImage(MovieImages(movieId = movie.id, url = it))
                         }
                         movieRepo.addMovie(movie)
                     }
@@ -38,6 +38,9 @@ class HomeMovieViewModel(val movieRepo: MovieRepo) : ViewModel(), MovieViewModel
                 } else {
                     mutalbeAllMovies.value = movies
                 }
+            }*/
+            movieRepo.getAllMovies().distinctUntilChanged().collect { movies ->
+                mutalbeAllMovies.value = movies
             }
         }
 

@@ -15,11 +15,9 @@ class DetailsMovieViewModel(val movieRepo: MovieRepo): ViewModel(), MovieViewMod
     private val movie = MutableStateFlow<MovieWithImages?>(null)
 
     fun getMovieById(id: String?): StateFlow<MovieWithImages?>? {
-        var newMovie = MutableStateFlow<MovieWithImages?>(null)
         viewModelScope.launch {
-            movieRepo.getById(id).collect { movie ->
-                newMovie.value = movie
-                this@DetailsMovieViewModel.movie.value = movie
+            movieRepo.getById(id).collect {
+                movie.value = it
             }
         }
         return movie.asStateFlow()

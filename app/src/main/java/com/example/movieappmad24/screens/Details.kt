@@ -39,7 +39,6 @@ import com.example.movieappmad24.viewmodel.DetailsMovieViewModel
 fun Details(navController: NavController, id: String?) {
     val viewModel: DetailsMovieViewModel = viewModel(factory = Injector.provideMovieViewModelFactory(context = LocalContext.current))
     val movie = viewModel.getMovieById(id = id)?.collectAsState()?.value
-    Log.d("test", "test")
     if (movie != null) {
         Scaffold(
             topBar = {

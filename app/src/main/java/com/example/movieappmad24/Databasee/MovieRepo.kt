@@ -12,7 +12,8 @@ class MovieRepo(private val MovieDAO: MovieDAO) {
     suspend fun deleteAllImages() = MovieDAO.deleteAllImages()
     suspend fun updateMovie(movie: Movie) = MovieDAO.update(movie)
     fun insertAll(movies: List<Movie>) = MovieDAO.insertMultipleMovies(movies = movies)
-    suspend fun insertAllImages(images: MovieImages) = MovieDAO.insertImage(image = images)
+    suspend fun insertImage(images: MovieImages) = MovieDAO.insertImage(image = images)
+    suspend fun insertAllImages(images: List<MovieImages>) = MovieDAO.insertMultipleImages(images = images)
 
     fun getAllMovies(): Flow<List<MovieWithImages>> = MovieDAO.getAllMovies()
     fun getAllImages(id: String?): Flow<List<MovieImages>> = MovieDAO.getAllImages(id)
