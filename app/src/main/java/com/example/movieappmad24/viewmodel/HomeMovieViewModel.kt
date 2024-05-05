@@ -20,21 +20,27 @@ class HomeMovieViewModel(val movieRepo: MovieRepo) : ViewModel(), MovieViewModel
     val allMovies: StateFlow<List<MovieWithImages>> = mutalbeAllMovies.asStateFlow()
 
     init {
+
         viewModelScope.launch {
-            movieRepo.deleteAllMovie()
-            movieRepo.deleteAllImages()
-            getMovies().forEach { movie: Movie ->
-                movie.images.forEach {
-                    movieRepo.insertAllImages(MovieImages(movieId = movie.id, url = it))
+            movieRepo.getAllMovies().distinctUntilChanged().collect { movies ->
+                if (movies.isEmpty()) {
+                    movieRepo.deleteAllMovie()
+                    movieRepo.deleteAllImages()
+                    getMovies().forEach { movie: Movie ->
+                        movie.images.forEach {
+                            movieRepo.insertAllImages(MovieImages(movieId = movie.id, url = it))
+                        }
+                        movieRepo.addMovie(movie)
+                    }
+                    movieRepo.getAllMovies().distinctUntilChanged().collect { movies ->
+                        mutalbeAllMovies.value = movies
+                    }
+                } else {
+                    mutalbeAllMovies.value = movies
                 }
-                movieRepo.addMovie(movie)
             }
         }
-        viewModelScope.launch {
-            movieRepo.getAllMovies().distinctUntilChanged().collect {
-                    movies -> mutalbeAllMovies.value = movies
-            }
-        }
+
     }
 
     override fun updateFavourite(instance: MovieWithImages) {
